@@ -2,16 +2,27 @@
 ## Development Setup for VSCode
 Download Python on your system from https://www.python.org/downloads/ \
 Download Visual Studio Code from https://code.visualstudio.com/download \
-Download some syntax highlighting to preserve your sanity: \
+Download some syntax highlighting to preserve your sanity:
 - [Python Syntax Highlighting](https://open-vsx.org/vscode/item?itemName=ms-python.python)
 - [Python Debugging](https://open-vsx.org/vscode/item?itemName=ms-python.debugpy)
 
-Finally, Download Git from https://git-scm.com/downloads \
+Then, Download Git from https://git-scm.com/downloads \
 Once you're inside your IDE, open up a terminal and run the following after changing the path:
 ```
 git clone https://github.com/StraightBeans/Azure-Dragons /path/to/where/you/want/it/saved
 ```
-Now open up your IDE from where you saved our repository and you're ready to go
+Now open up your IDE from where you saved our repository, \
+the directory should be called Azure-Dragons, and run the following:
+```
+python -m venv .venv
+```
+```
+source .venv/bin/activate
+```
+```
+pip install -r requirements.txt
+```
+Now you ready to start working
 
 ## Uploading Changes with Git
 Run the following after changing the username and email:
