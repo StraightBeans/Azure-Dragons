@@ -1,0 +1,51 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "無題.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "file.lastUsedOpenFilter": "すべてのファイル (*)",
+    "fileStates": {
+        "deco.tsx": {
+            "scaleInDock": 0.33,
+            "scaleInEditor": 1
+        },
+        "houses.tsx": {
+            "scaleInDock": 0.25,
+            "scaleInEditor": 1
+        },
+        "plains.tsx": {
+            "scaleInDock": 0.75,
+            "scaleInEditor": 1
+        },
+        "無題.tmx": {
+            "scale": 1,
+            "selectedLayer": 5,
+            "viewCenter": {
+                "x": 500,
+                "y": 344.5
+            }
+        }
+    },
+    "last.exportedFilePath": "/home/alice/coding/python/Azure-Dragons",
+    "last.imagePath": "/home/alice/coding/python/Azure-Dragons/tiled",
+    "map.lastUsedExportFilter": "すべてのファイル (*)",
+    "map.lastUsedFormat": "tmx",
+    "openFiles": [
+        "plains.tsx",
+        "無題.tmx",
+        "deco.tsx",
+        "houses.tsx"
+    ],
+    "project": "overworld.tiled-project",
+    "recentFiles": [
+        "plains.tsx",
+        "houses.tsx",
+        "deco.tsx",
+        "無題.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx"
+}
