@@ -1,0 +1,22 @@
+#Character Image
+idle = [pygame.image.load('idle0.png'), 
+pygame.image.load('idle1.png'), 
+pygame.image.load('idle2.png'),
+pygame.image.load('idle3.png'),
+pygame.image.load('idle4.png'), pygame.image.load('idle7.png'),
+pygame.image.load('idle5.png'), pygame.image.load('idle8.png'),
+pygame.image.load('idle6.png'), pygame.image.load('idle9.png')]
+
+#When adding this to pygame, place it before the "for loop" but after "running = true". The for loop should be under this "while running" loop.
+clock = pygame.time.Clock()
+idle_frame = 0
+idle_delay = 200
+while running:
+  game_display.blit(idle[idle_frame], (x, y))
+  current_time = pygame.time.get_ticks()
+  if current_time - idle_frame >= idle_delay:
+    idle_frame = (idle_frame + 1) % len(idle)
+    last_idle_update = current_time
+  pygame.display.update()  
+  game_display.blit(background, (0, 0)) 
+  clock.tick(60)
