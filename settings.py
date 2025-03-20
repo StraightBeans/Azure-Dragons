@@ -6,8 +6,8 @@ WINDOW_WIDTH, WINDOW_HEIGHT = 800,600
 TILE_SIZE = 32
 
 PLAYER_DATA = {
-    0: "Old Man": {"healh: 150"}, #This will be the old man that fights the cats, made 2 old men to give them different moves so ex. he won't use Custody Papers against a cat
-    1: "Old Man, the Revenger": {"health": 151}, #planning on having him survive on 1 hp on that final battle with the former missus
+    "Old Man": {"healh: 150"}, #This will be the old man that fights the cats, made 2 old men to give them different moves so ex. he won't use Custody Papers against a cat
+    "Old Man, the Revenger": {"health": 151}, #planning on having him survive on 1 hp on that final battle with the former missus
 }
 
 #All entities that can appear in battle, gave the some Elden Ring titles for fun feel free to change things around
