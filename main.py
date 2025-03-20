@@ -1,5 +1,6 @@
 from settings import *
 from player import Player
+from sprites import *
 
 class Game:
     def __init__(self):
@@ -12,13 +13,27 @@ class Game:
 
         #GROUPS#
         self.all_sprites = pygame.sprite.Group() 
+        self.collision_sprites = pygame.sprite.Group()
+        self.battle_sprites = pygame.sprite.Group()
 
-        #SPRITES#
-        self.player = Player((100,300), self.all_sprites)
+        #OVERWORLD# ex. everything taking place in the top-down perspective
+        ##SPRITES
+        ###PLAYER
+        self.player = Player((100,300), self.all_sprites, self.collision_sprites, self.battle_sprites)
+
+        ###COLLISIONS
+        Collision_Sprite((300,300), (20,60), self.collision_sprites)
+ 
+        ###ENTER BATTLE
+        Battle_Sprite((600, 300), (20,20), self.battle_sprites)
+
+        #BATTLE#
+        self.battle = None
+
 
     def run(self):
         while self.running:
-            delta_time = self.clock.tick() / 1000 #Makes player movement consistent across varying fps without capping fps
+            delta_time = self.clock.tick() / 1000 #Makes player movement consistent across varying fps, so no need to cap fps
 
             #EVENT LOOP#
             for event in pygame.event.get():
@@ -31,7 +46,10 @@ class Game:
             #RENDERING#
             self.screen.fill("black")
             self.all_sprites.draw(self.screen)
+            self.collision_sprites.draw(self.screen)
+            self.battle_sprites.draw(self.screen)
             pygame.display.update()
+
         pygame.quit()
 
 if __name__ == "__main__":
