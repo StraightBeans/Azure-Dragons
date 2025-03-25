@@ -1,0 +1,226 @@
+import pygame
+
+class NPC:
+  def __init__(self, name):
+      self.name = name
+      self.dialogue_options = {}
+
+  def add_dialogue(self, trigger, response):
+      self.dialogue_options[trigger] = response
+
+  def get_response(self, trigger):
+      # Check for common variations of commands
+      for key in self.dialogue_options:
+          if key in trigger:
+              return self.dialogue_options[key]
+      return "*tilts head and meows questioningly*"
+
+def interact_with_npc(npc):
+    print_dialogue(npc.name, "...", Colors.PURPLE)
+    while True:
+        player_input = input(f"{Colors.GREEN}Grandpa > {Colors.ENDC}").lower()
+        if player_input == "exit":
+            print_dialogue(npc.name, "Meow (That's what I thought)", Colors.PURPLE)
+            break
+        response = npc.get_response(player_input)
+        print_dialogue(npc.name, response, Colors.PURPLE)
+# Colors for dialogue
+class Colors:
+    BLUE = '\033[94m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    RED = '\033[91m'
+    PURPLE = '\033[95m'
+    ENDC = '\033[0m'
+
+def print_dialogue(character, text, color=Colors.ENDC):
+    print(f"{color}{character}: {text}{Colors.ENDC}")
+
+def print_choices(choices):
+    print("\nWhat will you do?")
+    for i, choice in enumerate(choices, 1):
+        print(f"{Colors.YELLOW}{i}. {choice}{Colors.ENDC}")
+
+# RPG game dialogue system
+print(f"{Colors.BLUE}================================")
+print("Welcome to the Missing Children RPG!")
+print("Help grandpa find his grandchildren!")
+print("================================{Colors.ENDC}")
+print()
+
+dialogue = {
+    "grandpa": "my grandchildren are missing! where should i look?",
+    "choices": ["go to grandma house", "go to the park"]
+}
+
+print_dialogue("Grandpa", dialogue["grandpa"], Colors.GREEN)
+print_choices(dialogue["choices"])
+choice = input(f"{Colors.PURPLE}> {Colors.ENDC}").lower()
+
+if choice == "go to grandma house":
+    print("You go to grandma house")
+    # Branch 1 - grandma house
+    dialogue = {
+        "grandpa": "I'm at grandma house I hear cats inside... do i knock",
+        "choices": ["knock on the door", "sneak through the back door"]
+    }
+    print(dialogue["grandpa"])
+    print("Choices:", dialogue["choices"])
+    choice = input("What do you do? ")
+
+    if choice == "knock on the door":
+        print("Grandma opens the door and sees you knocking")
+        dialogue = {
+            "grandma": "Oh, it's you! Would you like some tea?",
+            "choices": ["accept tea", "decline and ask about children"]
+        }
+        print(dialogue["grandma"])
+        print("Choices:", dialogue["choices"])
+        choice = input("What do you do? ")
+        
+        if choice == "accept tea":
+            print("Grandma: Come in, come in! *she leads you to the living room*")
+            print("Grandpa: *whispers* I hear children laughing upstairs...")
+            dialogue = {
+                "choices": ["sneak upstairs", "continue drinking tea"]
+            }
+            print("Choices:", dialogue["choices"])
+            choice = input("What do you do? ")
+            if choice == "sneak upstairs":
+                print("You find the children playing happily!")
+            else:
+                print("Grandma tells stories about when you were young...")
+                print("The children eventually come downstairs on their own!")
+        else:
+            print("Grandma looks disappointed but understands your concern")
+            print("She leads you to the children right away")
+    else:
+        print("You sneak through the back door and find grandma")
+        dialogue = {
+            "grandma": "Oh, what a surprise! *dozens of cats are glaring at grandpa*",
+            "choices": ["ask politely to see the children", "demand for the children", "pet the cats first"]
+        }
+        print(dialogue["grandma"])
+        print("Choices:", dialogue["choices"])
+        choice = input("What do you do? ")
+        
+        if choice == "pet the cats first":
+            print("The cats purr and warm up to grandpa")
+            print("Grandma: See? They like you! The children are upstairs playing")
+        elif choice == "ask politely":
+            print("Grandma appreciates your politeness and shows you to the children")
+        else:
+            print_dialogue("Cats", "*form a protective circle around grandma*", Colors.RED)
+            print_dialogue("Lead Cat", "HISS! You won't take grandma's joy away!", Colors.RED)
+            
+            battle_dialogue = {
+                "choices": ["apologize and offer peace", "try to fight the cats", "explain your worry"]
+            }
+            print_choices(battle_dialogue["choices"])
+            battle_choice = input(f"{Colors.PURPLE}> {Colors.ENDC}").lower()
+
+            if battle_choice == "apologize and offer peace":
+                print_dialogue("Cats", "*slowly relax their stance*", Colors.PURPLE)
+                print_dialogue("Grandma", "See? They just want everyone to be happy!", Colors.YELLOW)
+                print("The cats let you pass, and you find the children playing upstairs")
+            elif battle_choice == "try to fight the cats":
+                print_dialogue("Cats", "*ATTACK IN UNISON*", Colors.RED)
+                print_dialogue("You", "OUCH! BAD IDEA!", Colors.RED)
+                print_dialogue("Grandma", "Oh dear! Everyone stop! Children, come down please!", Colors.YELLOW)
+                print("The children come running down after hearing the commotion")
+            else:
+                print_dialogue("You", "I've been worried sick about the children...", Colors.GREEN)
+                print_dialogue("Lead Cat", "*slowly nods in understanding*", Colors.PURPLE)
+                print_dialogue("Grandma", "Oh, you should have said so! They're just upstairs having cookies", Colors.YELLOW)
+                
+                # Extended dialogue with grandma
+                dialogue = {
+                    "grandma": "Would you like to join us for tea and cookies? The children have been telling such wonderful stories!",
+                    "choices": ["join for tea", "ask why she didn't call", "check on children first"]
+                }
+                print_choices(dialogue["choices"])
+                choice = input(f"{Colors.PURPLE}> {Colors.ENDC}").lower()
+
+                if choice == "join for tea":
+                    print_dialogue("Grandma", "Wonderful! I made your favorite chamomile tea!", Colors.YELLOW)
+                    print_dialogue("Grandma", "The children were just telling me about their school play.", Colors.YELLOW)
+                    print_dialogue("Children", "*running down the stairs* Grandpa! We're practicing for our play!", Colors.GREEN)
+                elif choice == "ask why she didn't call":
+                    print_dialogue("Grandma", "Oh dear, I must have forgotten to charge my phone again...", Colors.YELLOW)
+                    print_dialogue("Grandma", "The cats kept knocking it off the table!", Colors.YELLOW)
+                    print_dialogue("Lead Cat", "*looks suspiciously innocent*", Colors.PURPLE)
+                else:
+                    print_dialogue("Grandma", "Of course, go ahead! They're in the playroom.", Colors.YELLOW)
+                    print_dialogue("Children", "*heard from upstairs* Grandpa! Come see what we made!", Colors.GREEN)
+else:
+    print("You go to the park")
+    # Branch 2 - park
+    dialogue = {
+        "grandpa": "I'm at the park its quiet.... but i see cookie crumbs! should i follow them?",
+        "choices": ["investigate the cookie crumbs", "go back to grandma house"]
+    }
+    print(dialogue["grandpa"])
+    print("Choices:", dialogue["choices"])
+    choice = input("What do you do? ")
+
+    if choice == "go back to grandma house":
+        print("You decide to check grandma's house instead")
+    else:
+        dialogue = {
+            "stranger": "I saw some kids leave with an old woman.... she had a lot of cats.",
+            "choices": ["run to grandma house", "call for backup"]
+        }
+        print(dialogue["stranger"])
+        print("Choices:", dialogue["choices"])
+        choice = input("What do you do? ")
+        if choice == "run to grandma house":
+           print("You run to grandma house and find her")
+        else:
+            print("You call for backup and return to grandma's house with the police")
+            dialogue = {
+                "grandpa": "The cats are blocking the entrance! What should we do?",
+                "choices": ["use catnip to distract them", "spray water at the cats"]
+            }
+            print(dialogue["grandpa"])
+            print("Choices:", dialogue["choices"])
+            choice = input("What do you do? ")
+
+            if choice == "use catnip to distract them":
+                print("The cats become distracted by the catnip, allowing you to sneak past them!")
+                print("You find your grandchildren playing safely inside!")
+            else:
+                print("The cats scatter as you spray water, clearing the path!")
+                print("You rush inside and find your grandchildren having a tea party with grandma!")
+
+print_dialogue("Lead Cat", "*growls menacingly*", Colors.RED)
+print_dialogue("Grandma", "*eyes glowing red* So, you finally found us...", Colors.RED)
+print_dialogue("You", "What have you done with my grandchildren?!", Colors.GREEN)
+print_dialogue("Grandma", "They're MINE now! Their youth gives me power!", Colors.RED)
+
+dialogue = {
+    "choices": ["fight grandma", "call for help", "try to reach the children"]
+}
+print_choices(dialogue["choices"])
+choice = input(f"{Colors.PURPLE}> {Colors.ENDC}").lower()
+
+if choice == "fight grandma":
+    print_dialogue("You", "I won't let you harm them!", Colors.GREEN)
+    print_dialogue("Grandma", "*throws magic tea cups*", Colors.RED)
+    print_dialogue("You", "*dodges and grabs the magical cane*", Colors.GREEN)
+    print_dialogue("Grandma", "NO! My source of power!", Colors.RED)
+elif choice == "call for help":
+    print_dialogue("You", "*pulls out phone* Hello, police?", Colors.GREEN)
+    print_dialogue("Grandma", "*laughs wickedly* No signal in my domain!", Colors.RED)
+    print_dialogue("You", "*uses phone flash to blind her*", Colors.GREEN)
+    print_dialogue("Grandma", "Argh! My eyes!", Colors.RED)
+else:
+    print_dialogue("You", "Children! Run!", Colors.GREEN)
+    print_dialogue("Grandma", "*blocks the stairs* Too late!", Colors.RED)
+    print_dialogue("You", "*throws water from vase at her*", Colors.GREEN)
+    print_dialogue("Grandma", "I'm melting! MELTING!", Colors.RED)
+
+print_dialogue("Evil Grandma", "*dissolves into pile of cats*", Colors.RED)
+print_dialogue("Children", "*running down* Grandpa! You saved us!", Colors.GREEN)
+print_dialogue("You", "Let's go home, kids. No more visits to evil grandma.", Colors.GREEN)
+print_dialogue("Children", "Can we get ice cream on the way?", Colors.GREEN)
+print_dialogue("You", "After all this? Absolutely!", Colors.GREEN)
