@@ -3,7 +3,7 @@ from settings import *
 class Player(pygame.sprite.Sprite):
     def __init__(self, position, groups, collision_sprites, battle_sprites):
         super().__init__(groups)
-        self.image = pygame.image.load(join("sprites", "old_man", "idle", "idle0.png")).convert_alpha()
+        self.image = pygame.image.load(Path("sprites") / "old_man" / "idle" / "idle0.png").convert_alpha()
         self.rect = self.image.get_frect(center = position)
         self.hitbox = self.rect.inflate(-60,0)
         self.direction = pygame.Vector2()
