@@ -1,4 +1,3 @@
-https://replit.com/join/kvqikptbha-arcblimp
 # Azure RPG
 ## Development Setup for VSCode
 Download Python on your system from https://www.python.org/downloads/ \
