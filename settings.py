@@ -20,19 +20,33 @@ ENEMY_DATA = {
     "Edna, the Ex-Wife": {"health": 150},
 }
 
+
 #All possible attacks
-ATTACK_DATA = {
+CAT_ATTACK_LIST = {
     #CAT
     "Scratch": {"damage": 10},
     "Purr": {"damage": 20},
+
+}
+    
+OLDMAN_ATTACK_LIST = {  
     #OLD MAN
     "Pspspsps": {"damage": 30},
     "Feed": {"damage": 40},
     "Brush": {"damage": 30},
+}   
 
     ##BOSSES##
     #OLD MAN, the Revenger
+OLDMAN_STAGETWO_LIST = {
+    "Cane": {"damage": 500},
+    "Walker": {"damage": 1000}
 
+}
+
+grandma_attack_list = {
     #OLD LADY
+    "Cookies": {"damage": 500},
     "Custody Papers": {"damage": 1000}
+
 }
