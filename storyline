@@ -1,0 +1,313 @@
+import pygame
+import sys
+
+# Initialize Pygame
+pygame.init()
+WINDOW_WIDTH = 800
+WINDOW_HEIGHT = 600
+screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+pygame.display.set_caption("RPG Game")
+
+# Colors
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+GRAY = (128, 128, 128)
+
+# Fonts
+font = pygame.font.Font(None, 32)
+choice_font = pygame.font.Font(None, 28)
+
+# Original dialogues dictionary remains the same
+dialogues = {
+    "welcome": {
+        "text": "Welcome to the Magical Family Quest! In this game, you'll embark on a journey to save your grandchildren from a magical mishap. Your mother-in-law has decided to teach them magic... her way.",
+        "choices": {
+            "begin": "Begin your adventure",
+            "quit": "Exit game"
+        }
+    },
+    "begin": {
+        "text": "You are about to enter a world where family and magic collide. Are you ready to face the challenges ahead?",
+        "choices": {
+            "start": "Start the quest",
+            "welcome": "Return to welcome screen"
+        }
+    },
+    "start": {
+        "text": "Grandpa spots Grandma in the garden, surrounded by her cats. 'Where are my grandchildren?!'",
+        "choices": {
+            "approach": "Approach carefully",
+            "charge": "Charge towards her"
+        }
+    },
+    "approach": {
+        "text": "The cats form a protective circle around Grandma. She grins mysteriously.",
+        "choices": {
+            "negotiate": "Try to reason with her",
+            "challenge": "Challenge her directly"
+        }
+    },
+    "charge": {
+        "text": "The cats scatter as you rush forward! Grandma's eyes start glowing...",
+        "choices": {
+            "stop": "Stop and demand answers",
+            "continue": "Keep charging"
+        }
+    },
+    "stop": {
+        "text": "You halt your charge and demand to know where the children are. Grandma's eyes narrow.",
+        "choices": {
+            "negotiate": "Try to negotiate",
+            "fight": "Prepare for combat"
+        }
+    },
+    "continue": {
+        "text": "Your reckless charge catches Grandma off guard! She stumbles backward!",
+        "choices": {
+            "fight": "Engage in magical combat",
+            "plead": "Try to reason with her now"
+        }
+    },
+    "negotiate": {
+        "text": "'The children are learning our ways now,' Grandma hisses, her form shifting between woman and cat!",
+        "choices": {
+            "fight": "Engage in magical combat",
+            "plead": "Plead for the children"
+        }
+    },
+    "fight": {
+        "text": "Magic crackles between you and Grandma! The cats scatter in fear!",
+        "choices": {
+            "spell": "Cast a binding spell",
+            "protect": "Create a protective barrier"
+        }
+    },
+    "plead": {
+        "text": "Your sincere words seem to reach Grandma. She hesitates, her eyes softening.",
+        "choices": {
+            "compromise": "Suggest a compromise",
+            "demand": "Demand to see the children"
+        }
+    },
+    "compromise": {
+        "text": "You suggest teaching the children magic together, as a family. Grandma's expression softens.",
+        "choices": {
+            "free_children": "Go find the children",
+            "forgive": "Make peace with Grandma"
+        }
+    },
+    "demand": {
+        "text": "Your firm demand makes Grandma step back. 'They're in the garden,' she admits.",
+        "choices": {
+            "investigate": "Go to the garden",
+            "protect": "Keep your guard up"
+        }
+    },
+    "spell": {
+        "text": "Your binding spell works! Grandma is trapped in a magical circle!",
+        "choices": {
+            "free_children": "Search for the children",
+            "question": "Question Grandma"
+        }
+    },
+    "question": {
+        "text": "Trapped in the circle, Grandma's eyes flash with defiance. 'The children needed to learn their heritage!'",
+        "choices": {
+            "compromise": "Offer to teach magic safely",
+            "reverse": "Demand she reverse the spell"
+        }
+    },
+    "protect": {
+        "text": "Your barrier protects you, and you hear children's voices nearby!",
+        "choices": {
+            "investigate": "Follow the voices",
+            "confront": "Confront Grandma"
+        }
+    },
+    "investigate": {
+        "text": "Following the voices, you discover the children hiding in the garden!",
+        "choices": {
+            "free_children": "Try to free them",
+            "protect": "Maintain your barrier"
+        }
+    },
+    "confront": {
+        "text": "You face Grandma directly, your magic barrier still holding strong!",
+        "choices": {
+            "fight": "Engage in magical combat",
+            "negotiate": "Try to reason with her"
+        }
+    },
+    "free_children": {
+        "text": "You find the children in the garden shed, half-transformed into kittens!",
+        "choices": {
+            "reverse": "Reverse the transformation",
+            "grandpa": "Call Grandpa for help"
+        }
+    },
+    "reverse": {
+        "text": "The children return to normal! Grandpa arrives just in time to see the transformation.",
+        "choices": {
+            "forgive": "Reunite with Grandma and forgive her",
+            "ending": "Just embrace the family reunion"
+        }
+    },
+    "forgive": {
+        "text": "The children run to Grandma, hugging her. 'We forgive you, but please teach us magic properly next time!'",
+        "choices": {
+            "ending": "Continue with the family reunion"
+        }
+    },
+    "ending": {
+        "text": "Grandpa hugs the children tightly. Grandma apologizes, promising to teach magic responsibly. The family is whole again.",
+        "choices": {
+            "restart": "Play again",
+            "quit": "Exit game"
+        }
+    },
+    "challenge": {
+        "text": "You challenge Grandma directly, but she seems more powerful than expected!",
+        "choices": {
+            "keep_fighting": "Get back up and keep fighting",
+            "retreat": "Retreat and rethink strategy"
+        }
+    },
+    "keep_fighting": {
+        "text": "Though weakened, your determination grows stronger! 'I won't give up on those children!'",
+        "choices": {
+            "fight": "Channel your remaining strength",
+            "plead": "Try reasoning one last time"
+        }
+    },
+    "retreat": {
+        "text": "You barely dodge a spell. 'This isn't over, Grandma!' you shout as you back away.",
+        "choices": {
+            "approach": "Try a more careful approach",
+            "negotiate": "Attempt peaceful negotiations"
+        }
+    },
+    "reunite": {
+        "text": "Grandpa hugs the children tightly. Grandma apologizes, promising to teach magic responsibly. The family is whole again.",
+        "choices": {}
+    },
+    "quit": {
+        "text": "Thanks for playing!",
+        "choices": {}
+    },
+    "restart": {
+        "text": "Starting a new game...",
+        "choices": {
+            "start": "Begin your adventure"
+        }
+    }
+}
+
+class Game:
+    def __init__(self):
+        self.scene = "welcome"
+        self.text_margin = 40
+        self.line_gap = 35
+        self.choice_gap = 35
+        self.story_y = 100
+        self.choices_y = WINDOW_HEIGHT - 150
+
+    def draw_text(self, text, y_pos):
+        # Split text into lines that fit screen width
+        space = 32
+        words = text.split()
+        lines = []
+        line = []
+        for word in words:
+            line.append(word)
+            test = ' '.join(line)
+            if font.size(test)[0] > WINDOW_WIDTH - 80:
+                line.pop()
+                lines.append(' '.join(line))
+                line = [word]
+        lines.append(' '.join(line))
+
+        # Draw each line
+        for i, line in enumerate(lines):
+            text = font.render(line, True, WHITE)
+            text_box = text.get_rect()
+            text_box.centerx = WINDOW_WIDTH // 2
+            text_box.y = y_pos + i * space
+            screen.blit(text, text_box)
+
+    def draw_choices(self, choices):
+        y = WINDOW_HEIGHT - 150
+        space = 35
+        
+        for key, value in choices.items():
+            text = f"{key} - {value}"
+            choice = choice_font.render(text, True, GRAY)
+            box = choice.get_rect()
+            box.centerx = WINDOW_WIDTH // 2
+            box.y = y
+            screen.blit(choice, box)
+            y += space
+
+    def handle_choice(self, choice):
+        if choice == "quit":
+            pygame.quit()
+            sys.exit()
+        elif choice in dialogues[self.scene]["choices"]:
+            if choice == "restart":
+                self.scene = "start"
+            elif choice in dialogues:
+                self.scene = choice
+            else:
+                # If the choice doesn't lead anywhere, stay on current scene
+                print(f"Warning: Missing dialogue for choice '{choice}'")
+
+    def run(self):
+        running = True
+        while running:
+            # Clear screen each frame
+            screen.fill(BLACK)
+
+            # Handle all game events
+            self.handle_events(running)
+
+            # Draw current scene
+            if self.scene in dialogues:
+                current_dialogue = dialogues[self.scene]
+                # Draw story text
+                self.draw_text(current_dialogue["text"], self.story_y)
+                # Draw choices
+                self.draw_choices(current_dialogue["choices"])
+
+            # Update display
+            pygame.display.flip()
+            
+        # Clean exit
+        self.quit_game()
+
+    def handle_events(self, running):
+        for event in pygame.event.get():
+            # Exit game if window closed 
+            if event.type == pygame.QUIT:
+                running = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    running = False
+            # Handle mouse clicks for choices
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                self.handle_mouse_click(event.pos)
+
+    def handle_mouse_click(self, mouse_pos):
+        # Check if any choice was clicked
+        y_pos = WINDOW_HEIGHT - 150
+        for choice in dialogues[self.scene]["choices"]:
+            choice_area = pygame.Rect(WINDOW_WIDTH//4, y_pos, WINDOW_WIDTH//2, 30)
+            if choice_area.collidepoint(mouse_pos):
+                self.handle_choice(choice)
+            y_pos += 35
+
+    def quit_game(self):
+        pygame.quit()
+        sys.exit()
+
+if __name__ == "__main__":
+    game = Game()
+    game.run()
