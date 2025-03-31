@@ -10,7 +10,6 @@ class Player(pygame.sprite.Sprite):
         self.velocity = 200
         self.collision_sprites = collision_sprites
         self.battle_sprites = battle_sprites
-        #self.moveable = moveable #Toggle during battle
 
     def input(self):
         movekeys = pygame.key.get_pressed()
@@ -42,14 +41,12 @@ class Player(pygame.sprite.Sprite):
                     elif self.direction.y > 0:
                         self.hitbox.bottom = sprite.rect.top
 
-    def enter_battle(self): #Remove overlapping battle sprite and enter into battle
+    def start_battle(self): #Call start_battle() on Battle_Sprites refer to sprites.py
         for sprite in self.battle_sprites:
             if sprite.rect.colliderect(self.hitbox):
-                sprite.kill()
-                print("Enter Battle")
-                Battle(PLAYER_DATA[0], ENEMY_DATA[0])
+                sprite.start_battle()
 
     def update(self, delta_time):
         self.input()
         self.move(delta_time)
-        self.enter_battle()
+        self.start_battle()
