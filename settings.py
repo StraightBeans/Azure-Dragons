@@ -19,7 +19,7 @@ ENEMY_DATA = {
     "Edna, the Ex-Wife": {"health": 150},
 }
 
-
+#PHASE1 OLD MAN
 PLAYER_ATTACK_DATA = {
     #OLD MAN
     "Pspspsps~~": {"damage": 30},
@@ -36,9 +36,6 @@ CAT_ATTACK_DATA = {
     "Brings a... Rat?": {"damage": 35},
     "Chews on your clothes": {"damage": 20},
 }
-
-    ##BOSSES##
-    #OLD MAN, the Revenger
 OLDMAN_STAGETWO_LIST = {
     "Cane": {"damage": 500},
     "Walker": {"damage": 1000}
