@@ -14,7 +14,9 @@ class Battle:
         self.running = True
         self.player_sprite = pygame.image.load(Path("sprites") / "old_man" / "idle" / "idle0.png").convert_alpha()
         self.enemy_sprite = pygame.Surface((50, 50))  # Placeholder square
-        self.enemy_sprite.fill("red")
+        self.image = pygame.image.load(Path("sprites") / "CatSprite.png").convert_alpha()
+
+
 
         #FIGHTERS
         self.player = Fighter(player_name, PLAYER_DATA[player_name]["health"], self.player_sprite)
