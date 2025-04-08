@@ -11,8 +11,17 @@ class Collision_Sprite(pygame.sprite.Sprite):
 class Battle_Sprite(pygame.sprite.Sprite):
     def __init__(self, position, size, groups, game, enemy_name):
         super().__init__(groups)
-        self.image = pygame.Surface(size)
-        self.image.fill("blue") #replace with enemies so that when they touch the battle begins also figure out how to remove the enemy when entering battle
+        self.image = pygame.Surface(size, pygame.SRCALPHA)
+
+        safe_name = enemy_name.replace(",", "").replace(" ", "") + ".png"
+        sprite_path = Path("sprites") / safe_name
+
+        try:
+            self.image = pygame.image.load(sprite_path).convert_alpha()
+
+        except:
+            self.image.fill("red")
+
         self.rect = self.image.get_frect(center = position)
         self.game = game
         self.enemy_name = enemy_name

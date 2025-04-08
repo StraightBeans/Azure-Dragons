@@ -27,12 +27,16 @@ class Game:
         Collision_Sprite((300,300), (20,60), self.collision_sprites)
  
         ###ENEMIES
-        Battle_Sprite((600, 300), (20,20), self.battle_sprites, self, "Kitty, Blade of Edna")
+        Battle_Sprite((600, 300), (32,32), self.battle_sprites, self, "Kitty, Blade of Edna")
+        Battle_Sprite((600, 450), (32,32), self.battle_sprites, self, "Martha, the Progenitor")
+        Battle_Sprite((600, 150), (32,32), self.battle_sprites, self, "Ophelia")
+        Battle_Sprite((600, 250), (32,32), self.battle_sprites, self, "Temperance, the Tamed")
+        Battle_Sprite((600, 500), (32,32), self.battle_sprites, self, "Edna, the Ex-Wife")
 
     def enter_battle(self, enemy_name):
         enemy_data = ENEMY_DATA.get(enemy_name)
         if enemy_data:
-            self.battle = Battle("Old Man", enemy_name, self)
+            self.battle = Battle(enemy_name, self)
             self.in_battle = True
 
     def exit_battle(self):

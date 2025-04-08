@@ -14,8 +14,7 @@ class RhombusButton:
         self.key = key
         self.selected = False
 
-        self.color_default = pygame.Color("gray50")
-        self.color_selected = pygame.Color("gray80")
+        self.color = pygame.Color("gray50")
         self.font = pygame.font.SysFont(None, 24)
 
         #POINTS
@@ -29,8 +28,7 @@ class RhombusButton:
         ]
 
     def draw(self, surface):
-        color = self.color_selected if self.selected else self.color_default
-        pygame.draw.polygon(surface, color, self.points)
+        pygame.draw.polygon(surface, self.color, self.points)
         
         #TEXT
         text_surf = self.font.render(self.text, True, "white")
@@ -38,43 +36,58 @@ class RhombusButton:
         surface.blit(text_surf, text_rect)
 
 class Battle:
-    def __init__(self, player_name, enemy_name, game):
+    def __init__(self, enemy_name, game):
         self.game = game
         self.screen = pygame.display.get_surface()
         self.running = True
+        self.enemy_name = enemy_name
 
         #SPRITES
         self.player_sprite = pygame.image.load(Path("sprites") / "old_man" / "idle" / "idle0.png").convert_alpha()
         self.player_sprite = pygame.transform.scale(self.player_sprite, (self.player_sprite.get_width() * 3, self.player_sprite.get_height() * 3))
-        self.enemy_sprite = pygame.image.load(Path("sprites") / "CatSprite.png")
-        self.enemy_sprite = pygame.transform.scale(self.enemy_sprite, (self.enemy_sprite.get_width() * 3, self.enemy_sprite.get_height() * 3))
+
+        #IMPORT ENEMY SPRITE
+        safe_name = enemy_name.replace(",", "").replace(" ", "") + ".png"
+        sprite_path = Path("sprites") / safe_name
+        try:
+            self.enemy_sprite = pygame.image.load(sprite_path).convert_alpha()
+            self.enemy_sprite = pygame.transform.scale(self.enemy_sprite, (self.enemy_sprite.get_width() * 3, self.enemy_sprite.get_height() * 3))
+        except:
+            self.enemy_sprite = pygame.Surface(50, 50)
+            self.enemy_sprite.fill("red")
+        
         self.background = pygame.image.load(Path("sprites") / "battlebackground.png")
 
         #FIGHTERS
-        self.player = Fighter(player_name, PLAYER_DATA[player_name]["health"], self.player_sprite)
+        self.player = Fighter("Old Man", PLAYER_DATA["Old Man"]["health"], self.player_sprite)
         self.enemy = Fighter(enemy_name, ENEMY_DATA[enemy_name]["health"], self.enemy_sprite)
         #TURN
         self.is_player_turn:bool = True
         self.attack = None
         self.delay:int = 0
 
-        #RHOMBUSES + ATTACK
-        self.attack_buttons = [
-            RhombusButton((400, 225), "Pspspsps~~", pygame.K_UP),
-            RhombusButton((400, 375), "Feed", pygame.K_DOWN),
-            RhombusButton((325, 300), "Brush", pygame.K_LEFT),
-            RhombusButton((475, 300), "Pet", pygame.K_RIGHT)
-        ]
+        #ATTACK VISUALS + MOVES
+        if enemy_name != "Edna, the Ex-Wife":
+            self.attack_buttons = [
+                RhombusButton((400, 225), "Pspspsps~~", pygame.K_UP),
+                RhombusButton((400, 375), "Feed", pygame.K_DOWN),
+                RhombusButton((325, 300), "Brush", pygame.K_LEFT),
+                RhombusButton((475, 300), "Pet", pygame.K_RIGHT)
+            ]
+        else:
+             self.attack_buttons = [
+                RhombusButton((400, 225), "Custody\nPapers", pygame.K_UP),
+                RhombusButton((400, 375), "Photos of\nthe Grandkids", pygame.K_DOWN),
+                RhombusButton((325, 300), "Aura Farm", pygame.K_LEFT),
+                RhombusButton((475, 300), "...I forgot", pygame.K_RIGHT)
+            ]           
 
         #TEXTBOX
         self.text = ""
         self.text_timer = 0
 
-#add importer for cat sprites depending on the name be sure to remove the preset enemy_sprite in __init__
-    #def import_assets(self):
-
     def update(self, delta_time):
-        #add a small delay before swapping turns
+        #ACTION DELAY
         self.delay -= delta_time
         if self.delay >0:
             return
@@ -104,10 +117,6 @@ class Battle:
                 return
         
         if self.attack:
-            #HIGHTLIGHT BUTTON
-            for button in self.attack_buttons:
-                button.selected = False
-
             #APPLY DAMAGE TO ENEMY + MESSAGE
             damage = PLAYER_ATTACK_DATA[self.attack]["damage"]
             self.enemy.health -= damage
@@ -115,7 +124,7 @@ class Battle:
             self.text_timer = 2.5
 
 
-            #END BATTLE / SWITCH TURNS            
+            #END BATTLE / SWITCH TURNS make sure to add a game over for winning against old lady            
             if self.enemy.health <= 0:
                 print(f"{self.enemy.name} has fled.")
                 self.game.exit_battle()
@@ -128,8 +137,12 @@ class Battle:
 
 
     def enemy_turn(self):
-        attack = random.choice(list(CAT_ATTACK_DATA.keys()))
-        damage = CAT_ATTACK_DATA[attack]["damage"]
+        if self.enemy_name != "Edna, the Ex-Wife":
+            attack = random.choice(list(CAT_ATTACK_DATA.keys()))
+            damage = CAT_ATTACK_DATA[attack]["damage"]
+        else:
+            attack = random.choice(list(OLDLADY_ATTACK_DATA.keys()))
+            damage = OLDLADY_ATTACK_DATA[attack]["damage"]
 
         #APPLY DAMAGE TO PLAYER + MESSAGE
         self.player.health -= damage
