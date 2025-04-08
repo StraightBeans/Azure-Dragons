@@ -151,10 +151,26 @@ class Battle:
 
         #END BATTLE / SWITCH TURNS
         if self.player.health <= 0:
-            print(f"{self.player.name} has been felled.")
-            self.game.exit_battle()
+            self.game_over()
         else:
             self.is_player_turn = True
+
+    def game_over(self):
+        font = pygame.font.SysFont(None, 64)
+        text = font.render("Game Over", True, "white")
+        text_rect = text.get_frect(center=(self.screen.get_width() // 2, self.screen.get_height() // 2))
+
+        self.screen.fill("black")
+        self.screen.blit(text, text_rect)
+        pygame.display.update()
+
+        waiting = True
+        while waiting:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT or event.type == pygame.KEYDOWN:
+                    waiting = False
+
+        pygame.quit()
 
     def render(self, screen):
         screen.blit(self.background, (0,0))
