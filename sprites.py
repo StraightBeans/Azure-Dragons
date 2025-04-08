@@ -18,7 +18,6 @@ class Battle_Sprite(pygame.sprite.Sprite):
 
         try:
             self.image = pygame.image.load(sprite_path).convert_alpha()
-
         except:
             self.image.fill("red")
 
